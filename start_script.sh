@@ -11,4 +11,5 @@ source myenv/bin/activate
 
 pip install --upgrade pip
 
-pip install fastapi uvicorn nest-asyncio pyngrok twilio pandas sentence-transformers faiss-cpu
+
+pip install fastapi uvicorn nest-asyncio pyngrok twilio pandas sentence-transformers faiss-cpu python-dotenv python-multipart
