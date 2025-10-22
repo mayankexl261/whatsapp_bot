@@ -202,38 +202,44 @@ async def whatsapp_webhook(Body: str = Form(...), From: str = Form(...)):
         logger.exception("Webhook error")
         return {"status": "error", "error": str(e)}
 
-def start_server_ngrok(port: int = 8000, ngrok_token: str = None):
-    # authenticate ngrok if token provided
-    if ngrok_token:
-        ngrok.set_auth_token(ngrok_token)
-    public_url = ngrok.connect(port)
-    logger.info(f"Public URL: {public_url}")
-    # start uvicorn server as background task
-    config = uvicorn.Config(app=app, host="0.0.0.0", port=port, log_level="info")
-    server = uvicorn.Server(config)
-    asyncio.create_task(server.serve())
-    return public_url
 
-from pyngrok import ngrok
-ngrok.set_auth_token("30XulEwAKdVQW7w0E2hKA53bnIw_74kn994Q4Xb1w6AS4ePeB")
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8001)
 
-import threading
-import uvicorn
-from pyngrok import ngrok
 
-# Kill any previous tunnels
-ngrok.kill()
+# def start_server_ngrok(port: int = 8000, ngrok_token: str = None):
+#     # authenticate ngrok if token provided
+#     if ngrok_token:
+#         ngrok.set_auth_token(ngrok_token)
+#     public_url = ngrok.connect(port)
+#     logger.info(f"Public URL: {public_url}")
+#     # start uvicorn server as background task
+#     config = uvicorn.Config(app=app, host="0.0.0.0", port=port, log_level="info")
+#     server = uvicorn.Server(config)
+#     asyncio.create_task(server.serve())
+#     return public_url
 
-# Create tunnel
-public_url = ngrok.connect(8000)
-print("Public URL for Twilio Webhook:", public_url.public_url)
+# from pyngrok import ngrok
+# ngrok.set_auth_token("30XulEwAKdVQW7w0E2hKA53bnIw_74kn994Q4Xb1w6AS4ePeB")
 
-# Function to run FastAPI app in background
-def run_app():
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+# import threading
+# import uvicorn
+# from pyngrok import ngrok
 
-# Start the app in background
-thread = threading.Thread(target=run_app, daemon=True)
-thread.start()
+# # Kill any previous tunnels
+# ngrok.kill()
+
+# # Create tunnel
+# public_url = ngrok.connect(8000)
+# print("Public URL for Twilio Webhook:", public_url.public_url)
+
+# # Function to run FastAPI app in background
+# def run_app():
+#     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+# # Start the app in background
+# thread = threading.Thread(target=run_app, daemon=True)
+# thread.start()
+
 
 
